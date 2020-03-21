@@ -1,22 +1,35 @@
 const express = require("express")
-const path = require("path")
-const fs = require("fs")
 
 const app = express()
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8080
 
-// app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
-app.get("/", function(req, res){
-    res.send("testing")
+//html
+app.get("/notes", (req, res) =>{
+    res.sendFile(path.join(__dirname, "./public/notes.html"))
+})
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/index.html"))
 })
 
 
-// app.get("*", function(req, res){
-    
-// })
+//api
+app.get("/api/notes", (req, res) =>{
+    res.json(savedNotes)
+})
 
-app.listen(port, function(){
+app.post("/api/notes", (req, res) =>{
+    savedNotes.push(req.body)
+    res.json(true)
+})
+
+
+
+
+
+app.listen(port, () => {
     console.log(`listening to port: ${port}`)
 })
